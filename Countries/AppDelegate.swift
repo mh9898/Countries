@@ -2,15 +2,13 @@
 //  AppDelegate.swift
 //  Countries
 //
-//  Created by MiciH on 4/12/21.
+//  Created by MiciH on 4/13/21.
 //
 
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
