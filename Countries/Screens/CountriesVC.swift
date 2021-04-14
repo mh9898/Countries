@@ -75,12 +75,12 @@ class CountriesVC: UIViewController {
         case 0:
             //A-Z
             segmentedControlItem = 0
-            countries.sort{ $0.name < $1.name }
+            countries.sort{ $0.name.localizedCompare($1.name) == .orderedAscending }
             reloadTableViewOnMain()
         case 1:
             //Z-A
             segmentedControlItem = 1
-            countries.sort{ $0.name > $1.name }
+            countries.sort{ $0.name.localizedCompare($1.name) == .orderedDescending }
             reloadTableViewOnMain()
         case 2:
             //S-L
@@ -95,7 +95,7 @@ class CountriesVC: UIViewController {
         default:
             //A-Z
             segmentedControlItem = 0
-            countries.sort{ $0.name < $1.name }
+            countries.sort{ $0.name.localizedCompare($1.name) == .orderedAscending }
             reloadTableViewOnMain()
         }
     }
@@ -180,12 +180,14 @@ extension CountriesVC: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CountryCell.reuseID) as! CountryCell
+        
         let country = countries[indexPath.row]
         cell.set(country: country)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         let country = countries[indexPath.row]
         
         var countriesBordersCode = [String]()
@@ -198,6 +200,22 @@ extension CountriesVC: UITableViewDelegate, UITableViewDataSource{
         destVC.countriesBorders = countriesBordersCode
         
         navigationController?.pushViewController(destVC, animated: true)
+    }
+}
+
+extension Collection where Element: StringProtocol {
+    public func localizedSorted(_ result: ComparisonResult) -> [Element] {
+        sorted { $0.localizedCompare($1) == result }
+    }
+    public func caseInsensitiveSorted(_ result: ComparisonResult) -> [Element] {
+        sorted { $0.caseInsensitiveCompare($1) == result }
+    }
+    public func localizedCaseInsensitiveSorted(_ result: ComparisonResult) -> [Element] {
+        sorted { $0.localizedCaseInsensitiveCompare($1) == result }
+    }
+    /// This method should be used whenever file names or other strings are presented in lists and tables where Finder-like sorting is appropriate. The exact sorting behavior of this method is different under different locales and may be changed in future releases. This method uses the current locale.
+    public func localizedStandardSorted(_ result: ComparisonResult) -> [Element] {
+        sorted { $0.localizedStandardCompare($1) == result }
     }
 }
 
